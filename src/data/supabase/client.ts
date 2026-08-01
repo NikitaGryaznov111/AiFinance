@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
-import { supabaseStorage } from '@/lib/storage';
+
+import { supabaseStorage } from '@/data/storage/async-storage';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
