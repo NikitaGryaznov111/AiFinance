@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* TODO При необходимости измени цвета под дизайн проекта */
+:root {
+    --color-background: #ffffff;
+    --color-foreground: #0f172a;
+    --color-muted: #6b7280;
+    --color-border: #e5e7eb;
+    --color-surface: #f8faf9;
+
+    --color-primary: #005b52;
+    --color-primary-foreground: #ffffff;
+
+    --color-income: #005b52;
+    --color-expense: #0f172a;
+
+    --color-tint-mint: #e7f5f1;
+    --color-tint-peach: #f5ebe3;
+}
+
+.dark {
+    --color-background: #0b1210;
+    --color-foreground: #f3f4f6;
+    --color-muted: #9ca3af;
+    --color-border: #24302c;
+    --color-surface: #121a17;
+
+    --color-primary: #2dd4bf;
+    --color-primary-foreground: #042f2e;
+
+    --color-income: #2dd4bf;
+    --color-expense: #f3f4f6;
+
+    --color-tint-mint: #12352f;
+    --color-tint-peach: #3a2a22;
+}

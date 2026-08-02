@@ -30,9 +30,10 @@ src/
 ├── entities/            # Доменные модели, Zod-схемы, бизнес-правила (без I/O)
 ├── features/            # Сценарии пользователя (экраны/хуки/UI фичи)
 ├── shared/              # Переиспользуемые UI-компоненты и утилиты без домена
-├── stores/              # Zustand: только UI-состояние
 └── global.css           # Tailwind / NativeWind entry
 ```
+
+Zustand живёт **внутри фичи** (`features/<name>/store`), а не в отдельном глобальном слое.
 
 ### Назначение слоёв
 
@@ -42,16 +43,14 @@ src/
 | `features/` | Use-case сценарии | добавить расход, AI-парсинг, фильтры |
 | `entities/` | Что такое данные и их правила | `Transaction`, zod-схемы, инварианты |
 | `data/` | Где хранятся и как синхронизируются | SQLite, repositories, sync, Supabase, AI API |
-| `stores/` | Эфемерный UI-state | модалки, выбранный период, активный tab |
 | `shared/` | Общее без бизнес-смысла | кнопки, форматтеры дат, константы UI |
 
 ### Правила импортов
 
 ```text
-app        → features, stores, data, shared
-features   → entities, data, stores, shared
+app        → features, data, shared
+features   → entities, data, shared  (+ свой store внутри фичи)
 data       → entities, shared
-stores     → shared (иногда data/storage для persist)
 entities   → почти никого (только чистые утилиты)
 shared     → никого из верхних слоёв
 ```
