@@ -29,8 +29,8 @@ src/
 │   └── supabase/        # Supabase client
 ├── entities/            # Доменные модели, Zod-схемы, бизнес-правила (без I/O)
 ├── features/            # Сценарии пользователя (экраны/хуки/UI фичи)
-├── shared/              # Переиспользуемые UI-компоненты и утилиты без домена
-└── global.css           # Tailwind / NativeWind entry
+├── shared/              # Переиспользуемые UI-компоненты и утилиты без 
+
 ```
 
 Zustand живёт **внутри фичи** (`features/<name>/store`), а не в отдельном глобальном слое.
