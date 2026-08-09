@@ -1,0 +1,46 @@
+---
+description: NativeWind, токены темы, стиль мокапов AiFinance
+globs: src/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+# UI и стили
+
+## NativeWind
+
+- Стилизуй через `className` (NativeWind / Tailwind)
+- Не используй `StyleSheet.create` и объекты `style` для обычной вёрстки (кроме случаев, где NativeWind не покрывает API)
+
+```tsx
+// ❌ плохо
+const styles = StyleSheet.create({ title: { fontSize: 22 } });
+
+// ✅ хорошо
+<Text className="text-xl text-foreground">Заголовок</Text>;
+```
+
+## Тема и токены
+
+- Цвета и семантика в UI — только через токены: `themeTokens.css` и классы из `tailwind.config.js` (`bg-background`, `text-primary`, `border-border`, `bg-tint-mint` и т.п.)
+- Hex/rgb (`Colors.*`, литералы `#…`) — только там, где NativeWind не покрывает API (градиенты, `ActivityIndicator` color, сторонние props без className). Не дублируй палитру в компонентах «на всякий случай»
+- Учитывай light/dark (`.dark` в токенах)
+
+```tsx
+// ❌ плохо — hex в обычном UI при наличии токена
+<Text style={{ color: Colors.Teal }}>Заголовок</Text>
+<View className="bg-white" />
+
+// ✅ хорошо — токены
+<Text className="text-primary">Заголовок</Text>
+<View className="bg-background" />
+
+// ✅ ок — hex только вне NativeWind
+<LinearGradient colors={Gradient.light} />
+<ActivityIndicator color={Colors.BlueL} />
+```
+
+## Визуал
+
+- Ориентир: `assets/mockups/`
+- Согласуй с уже существующими экранами и shared UI (`Button`, `Input`, `SafeAreaScreen` и др.)
+- Не ломай текущую палитру и радиусы ради «нового» дизайна

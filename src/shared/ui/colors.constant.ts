@@ -1,0 +1,30 @@
+export const Colors = {
+  Teal: '#005b52',
+  TealL: '#2dd4bf',
+  Mint: '#e7f5f1',
+  MintL: '#f3faf8',
+  Peach: '#f5ebe3',
+  PeachL: '#faf6f2',
+  Black: '#0f172a',
+  GrayD: '#374151',
+  Gray: '#6b7280',
+  GrayL: '#9ca3af',
+  Border: '#e5e7eb',
+  Surface: '#f8faf9',
+  White: '#ffffff',
+  Blue: '#2563eb',
+  BlueL: '#dbeafe',
+  Green: '#16a34a',
+  GreenL: '#dcfce7',
+  Red: '#dc2626',
+  RedL: '#fee2e2',
+  Orange: '#ea580c',
+  OrangeL: '#ffedd5',
+  Yellow: '#ca8a04',
+  YellowL: '#fef9c3',
+} as const;
+
+export const Gradient = {
+  light: ['#ffffff', '#b7e0d6'],
+  dark: ['#0b1210', '#1a4a40'],
+} as const;

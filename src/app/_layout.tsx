@@ -5,6 +5,7 @@ import { queryClient } from '@/data/query/client';
 import { ThemeProvider } from '@/features/theme/ui/ThemeProvider';
 import { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Routes } from '@/shared/navigation/routes';
 
 export default function RootLayout() {
   // TODO: Пока без логики авторизации, чисто заглушка
@@ -12,9 +13,9 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (!session) {
-      router.replace('/sign-in');
+      router.replace(Routes.auth.signIn);
     } else {
-      router.replace('/');
+      router.replace(Routes.app.home);
     }
   }, []);
 

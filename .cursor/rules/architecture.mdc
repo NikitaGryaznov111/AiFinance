@@ -1,0 +1,36 @@
+---
+description: Архитектура слоёв AiFinance, UI placement, роуты, проверка организации
+alwaysApply: true
+---
+
+# Архитектура
+
+Следуй разделам README.md: «Структура src», «Назначение слоёв», «Правила импортов». Не дублируй и не выдумывай другие слои.
+
+## Слои
+
+- `app/` — тонкие маршруты Expo Router, composition root (layouts, providers)
+- `features/` — сценарии пользователя; Zustand только внутри фичи (`features/<name>/store`)
+- `entities/` — домен и Zod, без React / SQLite / Supabase
+- `data/` — I/O (query, supabase; позже db/sync/ai); не зависит от `features`
+- `shared/` — общее без бизнес-смысла
+- `styles/` — CSS-токены темы
+
+## UI и навигация
+
+- Переиспользуемые компоненты → `src/shared/ui`
+- UI только для фичи → `src/features/<name>/ui`
+- Навигация только через `Routes` из `@/shared/navigation/routes` (не хардкодить пути строк)
+
+```ts
+// ❌ плохо
+router.push('/sign-up');
+
+// ✅ хорошо
+import { Routes } from '@/shared/navigation/routes';
+router.push(Routes.auth.signUp);
+```
+
+## После изменений
+
+В конце ответа одной-двумя фразами скажи, корректно ли новый код организован относительно этих слоёв (или что поправить).
