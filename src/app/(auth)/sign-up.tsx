@@ -1,9 +1,10 @@
-import { Text, View } from 'react-native';
+import SignUp from '@/features/auth/ui/SignUp';
+import SafeAreaScreen from '@/shared/ui/SafeAreaScreen';
 
 export default function SignUpScreen() {
-    return (
-        <View className="flex-1 items-center justify-center bg-white">
-            <Text className="text-2xl font-bold text-slate-900">Регистрация</Text>
-        </View>
-    );
+  return (
+    <SafeAreaScreen isGradient={true}>
+      <SignUp />
+    </SafeAreaScreen>
+  );
 }

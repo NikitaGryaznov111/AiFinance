@@ -1,6 +1,6 @@
 import { ActivityIndicator, Pressable, Text } from 'react-native';
 
-type ButtonVariant = 'default' | 'secondary' | 'outline';
+type ButtonVariant = 'default' | 'secondary' | 'outline' | 'ghost';
 
 interface IButtonProps {
   viewStyle?: string;
@@ -25,6 +25,10 @@ const variants: Record<ButtonVariant, { view: string; text: string }> = {
     text: 'text-secondary-foreground',
   },
   outline: {
+    view: 'border border-primary bg-transparent',
+    text: 'text-primary',
+  },
+  ghost: {
     view: 'bg-transparent',
     text: 'text-primary',
   },

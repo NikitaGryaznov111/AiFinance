@@ -1,22 +1,35 @@
-import { TextInput, TextStyle, View } from 'react-native';
+import { TextInput, View, type TextInputProps } from 'react-native';
+import { useColorScheme } from 'nativewind';
+import { Colors } from './colors.constant';
 
-interface IInputProps {
+type IInputProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   inputStyle?: string;
-}
+} & Pick<
+  TextInputProps,
+  | 'secureTextEntry'
+  | 'keyboardType'
+  | 'autoCapitalize'
+  | 'autoComplete'
+  | 'autoCorrect'
+  | 'textContentType'
+>;
 
-const Input = ({ value, onChange, placeholder, inputStyle }: IInputProps) => {
+const Input = ({ onChange, inputStyle = '', ...props }: IInputProps) => {
+  const { colorScheme } = useColorScheme();
+
   return (
     <View>
       <TextInput
-        value={value}
         onChangeText={onChange}
-        placeholder={placeholder}
-        className={`border-border border rounded-sm px-3 py-2.5 ${inputStyle}`}
+        placeholderTextColor={colorScheme === 'dark' ? Colors.GrayL : Colors.Gray}
+        className={`border-border bg-background text-foreground rounded-sm border px-3 py-2.5 ${inputStyle}`}
+        {...props}
       />
     </View>
   );
 };
+
 export default Input;
