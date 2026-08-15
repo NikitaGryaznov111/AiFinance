@@ -15,7 +15,7 @@ const SignUp = () => {
   const onSignUp = () => {};
 
   const onSignIn = () => {
-    router.push(Routes.auth.signIn);
+    router.replace(Routes.auth.signIn);
   };
 
   return (
