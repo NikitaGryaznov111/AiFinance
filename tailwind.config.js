@@ -21,6 +21,7 @@ module.exports = {
         },
         income: 'var(--color-income)',
         expense: 'var(--color-expense)',
+        destructive: 'var(--color-destructive)',
         tint: {
           mint: 'var(--color-tint-mint)',
           peach: 'var(--color-tint-peach)',

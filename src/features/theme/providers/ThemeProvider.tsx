@@ -1,10 +1,10 @@
+import { useEffect, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
-import { useEffect } from 'react';
 import { useThemeStore } from '../store/theme-store';
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: { children: ReactNode }) {
   const { colorScheme, setColorScheme } = useColorScheme();
   const theme = useThemeStore((s) => s.theme);
   useEffect(() => {

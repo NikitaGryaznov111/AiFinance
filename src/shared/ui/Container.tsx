@@ -1,7 +1,8 @@
+import { type ReactNode } from 'react';
 import { ScrollView, View } from 'react-native';
 
 interface IContainerProps {
-  children: React.ReactNode;
+  children: ReactNode;
   scroll?: boolean;
 }
 

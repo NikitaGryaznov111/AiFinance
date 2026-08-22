@@ -1,10 +1,11 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useColorScheme } from 'nativewind';
+import { type ReactNode } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useColorScheme } from 'nativewind';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Gradient } from './colors.constant';
 
 interface ISafeAreaScreenProps {
-  children: React.ReactNode;
+  children: ReactNode;
   isGradient?: boolean;
 }
 

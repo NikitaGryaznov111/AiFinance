@@ -1,14 +1,12 @@
 import { z } from 'zod';
 
 const emailSchema = z.email({ error: 'Введите корректный email' }).trim().toLowerCase();
-
 const passwordSchema = z.string().min(6, { error: 'Пароль должен быть не менее 6 символов' });
 
 export const signInSchema = z.object({
-  emil: emailSchema,
+  email: emailSchema,
   password: passwordSchema,
 });
-
 export const signUpSchema = z
   .object({
     email: emailSchema,

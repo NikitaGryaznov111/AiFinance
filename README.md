@@ -31,7 +31,9 @@ src/
 ├── entities/            # Доменные модели, Zod-схемы, бизнес-правила (без I/O)
 ├── features/            # Сценарии пользователя
 │   ├── auth/            # UI входа / регистрации
-│   └── theme/           # Тема (Zustand store + ThemeProvider)
+│   └── theme/
+│       ├── providers/   # ThemeProvider (оболочка приложения)
+│       └── store/       # Zustand: light / dark / system
 ├── shared/              # Переиспользуемые UI и утилиты без бизнес-смысла
 │   ├── navigation/      # Routes
 │   └── ui/              # Button, Input, SafeAreaScreen, …
@@ -39,6 +41,8 @@ src/
 ```
 
 Zustand живёт **внутри фичи** (`features/<name>/store`), а не в отдельном глобальном слое.
+
+Провайдеры фичи — в `features/<name>/providers` (не в `ui/` вместе с экранами). Их монтирует `app/_layout.tsx` как composition root.
 
 ### Назначение слоёв
 

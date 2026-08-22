@@ -13,6 +13,7 @@
 
   --color-income: #005b52;
   --color-expense: #0f172a;
+  --color-destructive: #dc2626;
 
   --color-tint-mint: #e7f5f1;
   --color-tint-peach: #f5ebe3;
@@ -33,6 +34,7 @@
 
   --color-income: #2dd4bf;
   --color-expense: #f3f4f6;
+  --color-destructive: #f87171;
 
   --color-tint-mint: #12352f;
   --color-tint-peach: #3a2a22;
