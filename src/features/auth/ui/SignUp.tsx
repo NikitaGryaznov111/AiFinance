@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { router } from 'expo-router';
 import z from 'zod';
 import Container from '@/shared/ui/Container';
@@ -8,26 +8,29 @@ import Button from '@/shared/ui/Button';
 import { Routes } from '@/shared/navigation/routes';
 import AuthorizationTitle from './AuthorizationTitle';
 import { signUpSchema } from '@/entities/auth/schema';
+import { useSignUp } from '../query/useSignUp';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState<Record<string, string> | null>(null);
+  const [errorFields, setErrorFields] = useState<Record<string, string> | null>(null);
+  const { signUp, isPending, isSuccess, error: signUpError, data } = useSignUp();
 
   const onSignUp = () => {
     // TODO Можно подумать и если валидация повторяется, то вынести в кастомный хук
     const res = signUpSchema.safeParse({ email, password, confirmPassword });
     if (!res.success) {
       const { fieldErrors } = z.flattenError(res.error);
-      setError({
+      setErrorFields({
         email: fieldErrors.email?.[0] ?? '',
         password: fieldErrors.password?.[0] ?? '',
         confirmPassword: fieldErrors.confirmPassword?.[0] ?? '',
       });
       return;
     }
-    // TODO Вызвать экшен регистрации
+    setErrorFields(null);
+    signUp({ email: res.data.email, password: res.data.password });
   };
 
   const onSignIn = () => {
@@ -48,7 +51,7 @@ const SignUp = () => {
           autoCorrect={false}
           textContentType="emailAddress"
           inputStyle="mb-2"
-          errorMessage={error?.email}
+          errorMessage={errorFields?.email}
         />
         <Input
           placeholder="Пароль"
@@ -58,7 +61,7 @@ const SignUp = () => {
           autoComplete="new-password"
           textContentType="newPassword"
           inputStyle="mb-2"
-          errorMessage={error?.password}
+          errorMessage={errorFields?.password}
         />
         <Input
           placeholder="Повторите пароль"
@@ -67,10 +70,29 @@ const SignUp = () => {
           secureTextEntry
           autoComplete="new-password"
           textContentType="newPassword"
-          errorMessage={error?.confirmPassword}
+          errorMessage={errorFields?.confirmPassword}
         />
-        <Button title="Создать аккаунт" onPress={onSignUp} viewStyle="mt-10" />
-        <Button title="Уже есть аккаунт" onPress={onSignIn} variant="ghost" viewStyle="mt-2" />
+        {isSuccess && !data?.session && (
+          <Text className="text-primary text-xs mt-2">Проверьте почту и подтвердите email</Text>
+        )}
+        {/* TODO реализовать мапинг ошибок */}
+        {signUpError && (
+          <Text className="text-destructive text-xs mt-2">{signUpError.message}</Text>
+        )}
+        <Button
+          title="Создать аккаунт"
+          onPress={onSignUp}
+          viewStyle="mt-10"
+          disabled={isPending}
+          loading={isPending}
+        />
+        <Button
+          title="Уже есть аккаунт"
+          onPress={onSignIn}
+          variant="ghost"
+          viewStyle="mt-2"
+          disabled={isPending}
+        />
       </View>
     </Container>
   );

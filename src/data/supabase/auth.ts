@@ -1,6 +1,7 @@
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import type { TSignInInput, TSignUpInput } from '@/entities/auth/schema';
 import { supabase } from './client';
+
 export const signIn = async ({ email, password }: TSignInInput) => {
   return await supabase.auth.signInWithPassword({
     email,
@@ -8,7 +9,7 @@ export const signIn = async ({ email, password }: TSignInInput) => {
   });
 };
 
-export const signUp = async ({ email, password }: TSignUpInput) => {
+export const signUp = async ({ email, password }: Pick<TSignUpInput, 'email' | 'password'>) => {
   return await supabase.auth.signUp({
     email,
     password,

@@ -31,6 +31,23 @@ import { Routes } from '@/shared/navigation/routes';
 router.push(Routes.auth.signUp);
 ```
 
+## Сеть
+
+- `features/<name>/ui` и экраны-маршруты `app/` не импортируют `@supabase/*` и `@/data/supabase`
+- Вызовы бэкенда из UI — только через `features/<name>/query` (`useMutation` / `useQuery`)
+- Хуки query вызывают `src/data/…`, не SDK в JSX
+- `data/supabase` — единственное место supabase-js
+- Провайдеры (`SessionProvider`) могут использовать `data` без Query-хука
+- `app/_layout.tsx` может импортировать `data/query/client`
+
+```ts
+// ❌ плохо — экран знает Auth
+import { signUp } from '@/data/supabase/auth';
+
+// ✅ хорошо
+import { useSignUp } from '../query/useSignUp';
+```
+
 ## После изменений
 
 В конце ответа одной-двумя фразами скажи, корректно ли новый код организован относительно этих слоёв (или что поправить).

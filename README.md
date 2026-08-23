@@ -21,7 +21,7 @@
 ```text
 src/
 ├── app/                 # Маршруты Expo Router (тонкий слой)
-│   ├── _layout.tsx      # Провайдеры, корневой Stack, редирект auth/app
+│   ├── _layout.tsx      # Провайдеры, корневой Stack, Stack.Protected (auth / app)
 │   ├── (auth)/          # Экраны входа / регистрации
 │   └── (app)/           # Авторизованная зона
 │       └── (tabs)/      # Home, transactions, analytics, profile
@@ -30,7 +30,11 @@ src/
 │   └── supabase/        # Supabase client
 ├── entities/            # Доменные модели, Zod-схемы, бизнес-правила (без I/O)
 ├── features/            # Сценарии пользователя
-│   ├── auth/            # UI входа / регистрации
+│   ├── auth/
+│   │   ├── ui/          # экраны: Zod + query-хуки, без Supabase
+│   │   ├── query/       # TanStack Query: useSignIn, useSignUp, useSignOut
+│   │   ├── hooks/       # useSession
+│   │   └── providers/   # SessionProvider
 │   └── theme/
 │       ├── providers/   # ThemeProvider (оболочка приложения)
 │       └── store/       # Zustand: light / dark / system
@@ -44,12 +48,18 @@ Zustand живёт **внутри фичи** (`features/<name>/store`), а не 
 
 Провайдеры фичи — в `features/<name>/providers` (не в `ui/` вместе с экранами). Их монтирует `app/_layout.tsx` как composition root.
 
+### Сеть и UI
+
+Экраны (`features/<name>/ui` и маршруты-страницы в `app/`) не импортируют `@supabase/*` и `@/data/supabase`. Действия с бэкендом (Auth, позже API/sync) идут через хуки TanStack Query в `features/<name>/query`. Хуки вызывают функции из `data/`. Клиент supabase-js живёт только в `src/data/supabase`.
+
+Провайдеры фичи (например `SessionProvider`) могут ходить в `data` напрямую: сессия — подписка, не мутация формы. `app/_layout.tsx` как composition root может подключать `data/query/client` (QueryClient).
+
 ### Назначение слоёв
 
 | Слой | Ответственность | Примеры |
 |------|-----------------|---------|
 | `app/` | Маршруты и composition root | layouts, providers, навигация |
-| `features/` | Use-case сценарии | auth UI, тема, добавить расход, AI-парсинг |
+| `features/` | Use-case сценарии | auth UI, `useSignUp`, тема, добавить расход |
 | `entities/` | Что такое данные и их правила | `Transaction`, zod-схемы, инварианты |
 | `data/` | Где хранятся и как синхронизируются | SQLite, repositories, sync, Supabase, AI API |
 | `shared/` | Общее без бизнес-смысла | кнопки, форматтеры дат, константы UI |
@@ -58,12 +68,15 @@ Zustand живёт **внутри фичи** (`features/<name>/store`), а не 
 ### Правила импортов
 
 ```text
-app        → features, data, shared
-features   → entities, data, shared  (+ свой store внутри фичи)
-data       → entities, shared
-entities   → почти никого (только чистые утилиты)
-shared     → никого из верхних слоёв
-styles     → никого (только CSS)
+app/_layout     → features, data/query (клиент), shared
+app (экраны)    → features, shared
+features/ui     → entities, shared, свой query/hooks (не data/supabase)
+features/query  → data, entities
+features/*      → entities, data, shared  (+ свой store / providers)
+data            → entities, shared
+entities        → почти никого (только чистые утилиты)
+shared          → никого из верхних слоёв
+styles          → никого (только CSS)
 ```
 
 `data` не зависит от `features`.  
