@@ -1,0 +1,52 @@
+---
+description: Стиль кода AiFinance — импорты и логи
+globs: src/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+# Стиль кода
+
+## Импорты
+
+Порядок в файле:
+
+1. Внешние библиотеки (`react`, `expo-router`, `nativewind`, …)
+2. Внутренние модули (`@/…`, относительные `./` и `../`)
+
+```ts
+// ❌ плохо
+import Button from '@/shared/ui/Button';
+import { useState } from 'react';
+import { router } from 'expo-router';
+
+// ✅ хорошо
+import { useState } from 'react';
+import { router } from 'expo-router';
+import Button from '@/shared/ui/Button';
+import { Routes } from '@/shared/navigation/routes';
+```
+
+Группируй внешние импорты сверху, внутренние — ниже; не смешивай вперемешку.
+
+## Логи
+
+Не используй `console.log` и `console.debug`. Допустимы только `console.info`, `console.warn`, `console.error`.
+
+- `info` — осознанная диагностика
+- `warn` / `error` — сбои и неожиданные состояния, не отладка вёрстки
+
+```ts
+// ❌ плохо
+console.log(operation);
+console.debug('mounted');
+
+// ✅ хорошо
+console.info('session restored');
+console.warn('empty operations list');
+console.error('sign-in failed', error);
+```
+
+## Объём правок
+
+- Меняй только то, о чём попросили. Не «заодно» соседние файлы
+- Условия: простой тернарник или ранний `return`, не словарь на несколько одинаковых значений

@@ -7,7 +7,7 @@ import Input from '@/shared/ui/Input';
 import Button from '@/shared/ui/Button';
 import { Routes } from '@/shared/navigation/routes';
 import AuthorizationTitle from './AuthorizationTitle';
-import { signInSchema } from '@/entities/auth/schema';
+import { signInSchema } from '@/entities/auth/schema/auth';
 import { useSignIn } from '../query/useSignIn';
 
 const SignIn = () => {
@@ -59,7 +59,7 @@ const SignIn = () => {
           textContentType="password"
           errorMessage={errorFields?.password}
         />
-        {/* TODO реализовать мапинг ошибок */}
+        {/* TODO реализовать мапинг ошибок, чтобы они были понятны и на русском */}
         {signInError && (
           <Text className="text-destructive text-xs mt-2">{signInError.message}</Text>
         )}

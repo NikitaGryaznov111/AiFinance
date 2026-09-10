@@ -1,0 +1,60 @@
+---
+description: Типы AiFinance — размещение, Zod, моки, префиксы T/I
+globs: src/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+# Типы
+
+## Куда класть
+
+- Домен, нужен **нескольким фичам** → `src/entities/<name>/types/<name>.ts`
+- Тип только одной фичи → `src/features/<feature>/types/<name>.ts`
+- Если описывается интерфейс для пропсов компонента, то писать интерфейс внутри компонента, не в `types/`
+
+```ts
+// ✅ хорошо — домен на несколько фич
+src/entities/operation/types/operation.ts
+
+// ✅ хорошо — view-модель только главной
+src/features/home/types/operation.ts
+```
+
+
+## Zod
+
+- Только TypeScript без схемы → `types/`
+- Zod → `src/entities/<name>/schema/<name>.ts` (auth: один файл `schema/auth.ts`, обе формы внутри)
+- Тип из схемы — в том же файле через `z.infer`, не копировать в `types/`
+- Не заводить Zod, чтобы описать свой мок или внутреннюю структуру
+
+## Моки
+
+Пока данные захардкожены, над типом/константой — комментарий, что это мок и его заменят, когда появится data layer / API:
+
+```ts
+// TODO: мок полей. Заменить, когда появятся реальные известные поля с API.
+export type THomeOperation = {/* … */};
+```
+
+## Имена
+
+- `type` и `z.infer` — префикс `T`: `THomeOperation`, `TSignInInput`, `TThemes`
+- `interface` (пропсы, объектные контракты) — префикс `I`: `IButtonProps`, `IContainerProps`
+- Union/литералы — `type` с `T`, не `I`: `TOperationKind`
+- Zod-схемы без префикса: `signInSchema`, не `TSignInSchema`
+- Пропсы компонента — `interface`, не `type`: `IButtonProps`, не `TButtonProps`
+
+```ts
+// ❌ плохо
+export type HomeOperation = { id: string };
+export interface ButtonProps {
+  title: string;
+}
+
+// ✅ хорошо
+export type THomeOperation = { id: string };
+export interface IButtonProps {
+  title: string;
+}
+```

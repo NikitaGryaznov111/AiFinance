@@ -8,7 +8,11 @@ interface IContainerProps {
 
 const Container = ({ children, scroll = true }: IContainerProps) => {
   if (scroll) {
-    return <ScrollView contentContainerClassName="flex-1 px-4 pb-4">{children}</ScrollView>;
+    return (
+      <ScrollView className="flex-1" contentContainerClassName="grow px-4 pb-4">
+        {children}
+      </ScrollView>
+    );
   }
 
   return <View className="flex-1 px-4 pb-4">{children}</View>;

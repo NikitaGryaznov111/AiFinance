@@ -7,7 +7,7 @@ import Input from '@/shared/ui/Input';
 import Button from '@/shared/ui/Button';
 import { Routes } from '@/shared/navigation/routes';
 import AuthorizationTitle from './AuthorizationTitle';
-import { signUpSchema } from '@/entities/auth/schema';
+import { signUpSchema } from '@/entities/auth/schema/auth';
 import { useSignUp } from '../query/useSignUp';
 
 const SignUp = () => {

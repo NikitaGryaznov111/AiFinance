@@ -1,6 +1,5 @@
 import { Text, TextInput, View, type TextInputProps } from 'react-native';
-import { useColorScheme } from 'nativewind';
-import { Colors } from './colors.constant';
+import { useThemeTokens } from '@/shared/hooks/useThemeTokens';
 
 type IInputProps = {
   value: string;
@@ -19,13 +18,13 @@ type IInputProps = {
 >;
 
 const Input = ({ inputStyle = '', errorMessage, ...props }: IInputProps) => {
-  const { colorScheme } = useColorScheme();
+  const { muted } = useThemeTokens();
 
   return (
     <View>
       {errorMessage && <Text className="text-destructive text-xs">{errorMessage}</Text>}
       <TextInput
-        placeholderTextColor={colorScheme === 'dark' ? Colors.GrayL : Colors.Gray}
+        placeholderTextColor={muted}
         className={`border-border bg-background text-foreground rounded-sm border px-3 py-2.5 ${inputStyle}`}
         {...props}
       />

@@ -5,5 +5,8 @@ export const Routes = {
   },
   app: {
     home: '/',
+    transactions: '/transactions',
+    analytics: '/analytics',
+    profile: '/profile',
   },
 } as const;

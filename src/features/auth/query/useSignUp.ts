@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { TSignUpInput } from '@/entities/auth/schema';
+import type { TSignUpInput } from '@/entities/auth/schema/auth';
 import { signUp } from '@/data/supabase/auth';
 
 export const useSignUp = () => {

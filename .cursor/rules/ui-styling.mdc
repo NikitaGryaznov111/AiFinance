@@ -21,22 +21,26 @@ const styles = StyleSheet.create({ title: { fontSize: 22 } });
 
 ## Тема и токены
 
-- Цвета и семантика в UI — только через токены: `themeTokens.css` и классы из `tailwind.config.js` (`bg-background`, `text-primary`, `border-border`, `bg-tint-mint` и т.п.)
-- Hex/rgb (`Colors.*`, литералы `#…`) — только там, где NativeWind не покрывает API (градиенты, `ActivityIndicator` color, сторонние props без className). Не дублируй палитру в компонентах «на всякий случай»
-- Учитывай light/dark (`.dark` в токенах)
+- Цвета в UI — токены: `themeTokens.css` и классы из `tailwind.config.js` (`bg-background`, `text-primary`, `border-border`, `bg-tint-mint`)
+- Нужна **строка** цвета (Lucide, `tabBarActiveTintColor`, `placeholderTextColor`, `ActivityIndicator`) → `useThemeTokens()` из `@/shared/hooks/useThemeTokens`. Не `Colors.*` и не `useUnstableNativeVariable` в компоненте
+- Hex / `Colors.*` / `Gradient` — только если API не принимает CSS-переменную (`LinearGradient`)
+- Light/dark не ветвить через `colorScheme` + hex: токены и хук уже из `:root` / `.dark`
 
 ```tsx
-// ❌ плохо — hex в обычном UI при наличии токена
+// ❌ плохо
 <Text style={{ color: Colors.Teal }}>Заголовок</Text>
-<View className="bg-white" />
-
-// ✅ хорошо — токены
-<Text className="text-primary">Заголовок</Text>
-<View className="bg-background" />
-
-// ✅ ок — hex только вне NativeWind
-<LinearGradient colors={Gradient.light} />
 <ActivityIndicator color={Colors.BlueL} />
+const primary = useUnstableNativeVariable('--color-primary');
+
+// ✅ хорошо — className
+<Text className="text-primary">Заголовок</Text>
+
+// ✅ хорошо — строковый цвет
+const { primary } = useThemeTokens();
+<ActivityIndicator color={primary} />
+
+// ✅ ок — градиент вне NativeWind
+<LinearGradient colors={Gradient.light} />
 ```
 
 ## Визуал

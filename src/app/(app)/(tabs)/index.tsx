@@ -1,8 +1,10 @@
-import { Text, View } from 'react-native';
+import Home from '@/features/home/ui/Home';
+import SafeAreaScreen from '@/shared/ui/SafeAreaScreen';
+
 export default function HomeScreen() {
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-2xl font-bold text-slate-900">Главная</Text>
-    </View>
+    <SafeAreaScreen edges={['top']}>
+      <Home />
+    </SafeAreaScreen>
   );
 }

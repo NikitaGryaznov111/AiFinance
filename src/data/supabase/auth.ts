@@ -1,5 +1,5 @@
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
-import type { TSignInInput, TSignUpInput } from '@/entities/auth/schema';
+import type { TSignInInput, TSignUpInput } from '@/entities/auth/schema/auth';
 import { supabase } from './client';
 
 export const signIn = async ({ email, password }: TSignInInput) => {
