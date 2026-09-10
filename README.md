@@ -96,9 +96,12 @@ src/data/
 
 ## Скрипты
 
+`npm run emulator` — AVD с DNS Google (`8.8.8.8`). Иначе эмулятор берёт DNS Windows/VPN и не резолвит `*.supabase.co`.
+
 | Команда | Описание |
 |---------|----------|
 | `npm run start` | Expo Dev Server |
 | `npm run android` | Запуск на Android |
+| `npm run emulator` | AVD Small_Phone с DNS 8.8.8.8 |
 | `npm run ios` | Запуск на iOS |
 | `npm run web` | Web (Metro) |
