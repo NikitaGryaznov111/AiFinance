@@ -7,10 +7,11 @@ import Input from '@/shared/ui/Input';
 import Button from '@/shared/ui/Button';
 import { Routes } from '@/shared/navigation/routes';
 import AuthorizationTitle from './AuthorizationTitle';
-import { signUpSchema } from '@/entities/auth/schema/auth';
+import { signUpFormSchema } from '@/entities/auth/schema/auth';
 import { useSignUp } from '../query/useSignUp';
 
 const SignUp = () => {
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,10 +20,11 @@ const SignUp = () => {
 
   const onSignUp = () => {
     // TODO Можно подумать и если валидация повторяется, то вынести в кастомный хук
-    const res = signUpSchema.safeParse({ email, password, confirmPassword });
+    const res = signUpFormSchema.safeParse({ displayName, email, password, confirmPassword });
     if (!res.success) {
       const { fieldErrors } = z.flattenError(res.error);
       setErrorFields({
+        displayName: fieldErrors.displayName?.[0] ?? '',
         email: fieldErrors.email?.[0] ?? '',
         password: fieldErrors.password?.[0] ?? '',
         confirmPassword: fieldErrors.confirmPassword?.[0] ?? '',
@@ -30,7 +32,11 @@ const SignUp = () => {
       return;
     }
     setErrorFields(null);
-    signUp({ email: res.data.email, password: res.data.password });
+    signUp({
+      displayName: res.data.displayName,
+      email: res.data.email,
+      password: res.data.password,
+    });
   };
 
   const onSignIn = () => {
@@ -41,6 +47,17 @@ const SignUp = () => {
     <Container>
       <View className="flex-1 justify-center">
         <AuthorizationTitle />
+        <Input
+          placeholder="Имя"
+          value={displayName}
+          onChangeText={setDisplayName}
+          autoCapitalize="words"
+          autoComplete="name"
+          autoCorrect={false}
+          textContentType="name"
+          inputStyle="mb-2"
+          errorMessage={errorFields?.displayName}
+        />
         <Input
           placeholder="Email"
           value={email}

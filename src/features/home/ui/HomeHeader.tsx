@@ -1,10 +1,14 @@
 import { Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { Bell, User } from 'lucide-react-native';
-import Button from '@/shared/ui/Button';
+import { useSession } from '@/features/auth/hooks/useSession';
 import { Routes } from '@/shared/navigation/routes';
+import Button from '@/shared/ui/Button';
 
 const HomeHeader = () => {
+  const { session } = useSession();
+  const displayName = session?.user.user_metadata.displayName;
+
   return (
     <View className="flex-row items-center justify-between py-2">
       <View className="flex-row items-center gap-3">
@@ -16,8 +20,7 @@ const HomeHeader = () => {
         />
         <View>
           <Text className="text-muted text-sm">Привет</Text>
-          <Text className="text-primary text-xl font-bold">AiFinance</Text>
-          {/* Потом реализовать получение имени пользователя с бэка. */}
+          <Text className="text-primary text-xl font-bold">{displayName ?? 'AiFinance'}</Text>
         </View>
       </View>
       <Button

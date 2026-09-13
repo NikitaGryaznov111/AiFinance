@@ -9,10 +9,13 @@ export const signIn = async ({ email, password }: TSignInInput) => {
   });
 };
 
-export const signUp = async ({ email, password }: Pick<TSignUpInput, 'email' | 'password'>) => {
+export const signUp = async ({ displayName, email, password }: TSignUpInput) => {
   return await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: { displayName },
+    },
   });
 };
 

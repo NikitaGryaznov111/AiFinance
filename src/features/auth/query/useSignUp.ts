@@ -4,7 +4,7 @@ import { signUp } from '@/data/supabase/auth';
 
 export const useSignUp = () => {
   const mutation = useMutation({
-    mutationFn: async (input: Pick<TSignUpInput, 'email' | 'password'>) => {
+    mutationFn: async (input: TSignUpInput) => {
       const { data, error: signUpError } = await signUp(input);
       if (signUpError) {
         throw new Error(signUpError.message ?? 'Ошибка регистрации');
