@@ -1,13 +1,13 @@
 import { Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { Bell, User } from 'lucide-react-native';
-import { useSession } from '@/features/auth/hooks/useSession';
+import { useSession } from '@/providers/SessionProvider';
 import { Routes } from '@/shared/navigation/routes';
 import Button from '@/shared/ui/Button';
 
 const HomeHeader = () => {
-  const { session } = useSession();
-  const displayName = session?.user.user_metadata.displayName;
+  const { user } = useSession();
+  const displayName = user?.displayName;
 
   return (
     <View className="flex-row items-center justify-between py-2">

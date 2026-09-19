@@ -8,7 +8,7 @@ import MonthlyLimit from './MonthlyLimit';
 import RecentOperations from './RecentOperations';
 
 const Home = () => {
-  // TODO Реализовать получение данных из хуков query для передачи их дочерним компонентам, пока что моковые данные. Либо использовать query хуки внутри дочерних компонентов, если данные нужны изолированно внутри компонента, надо будет подумать.
+  // TODO Данные с бэка — через query-хуки фич, сюда пропсами в секции.
   return (
     <View className="flex-1">
       <Container>

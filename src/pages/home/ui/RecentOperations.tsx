@@ -1,10 +1,10 @@
 import { Text, View } from 'react-native';
 import Button from '@/shared/ui/Button';
-import type { THomeOperation } from '../types/operation';
+import { TOperation } from '@/entities/operation/types/operation';
 import OperationRow from './OperationRow';
 
 interface IRecentOperationsProps {
-  operations: THomeOperation[];
+  operations: TOperation[];
 }
 
 const RecentOperations = ({ operations }: IRecentOperationsProps) => {
