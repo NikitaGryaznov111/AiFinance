@@ -1,50 +1,15 @@
 ---
-description: NativeWind, токены темы, стиль мокапов AiFinance
+description: NativeWind и токены темы AiFinance
 globs: src/**/*.{ts,tsx}
 alwaysApply: true
 ---
 
 # UI и стили
 
-## NativeWind
+- Вёрстка через `className` (NativeWind). Без `StyleSheet` для обычного UI
+- Цвета — токены `themeTokens.css` / Tailwind (`bg-background`, `text-primary`, …)
+- Строка цвета (Lucide, `ActivityIndicator`, tab bar) → `useThemeTokens()` из `@/shared/hooks/useThemeTokens`
+- Не палитра `Colors.*`, не `useUnstableNativeVariable` в компонентах
+- Hex только где API не принимает CSS-переменную: градиент в `SafeAreaScreen` (`LinearGradient`)
 
-- Стилизуй через `className` (NativeWind / Tailwind)
-- Не используй `StyleSheet.create` и объекты `style` для обычной вёрстки (кроме случаев, где NativeWind не покрывает API)
-
-```tsx
-// ❌ плохо
-const styles = StyleSheet.create({ title: { fontSize: 22 } });
-
-// ✅ хорошо
-<Text className="text-xl text-foreground">Заголовок</Text>;
-```
-
-## Тема и токены
-
-- Цвета в UI — токены: `themeTokens.css` и классы из `tailwind.config.js` (`bg-background`, `text-primary`, `border-border`, `bg-tint-mint`)
-- Нужна **строка** цвета (Lucide, `tabBarActiveTintColor`, `placeholderTextColor`, `ActivityIndicator`) → `useThemeTokens()` из `@/shared/hooks/useThemeTokens`. Не `Colors.*` и не `useUnstableNativeVariable` в компоненте
-- Hex / `Colors.*` / `Gradient` — только если API не принимает CSS-переменную (`LinearGradient`)
-- Light/dark не ветвить через `colorScheme` + hex: токены и хук уже из `:root` / `.dark`
-
-```tsx
-// ❌ плохо
-<Text style={{ color: Colors.Teal }}>Заголовок</Text>
-<ActivityIndicator color={Colors.BlueL} />
-const primary = useUnstableNativeVariable('--color-primary');
-
-// ✅ хорошо — className
-<Text className="text-primary">Заголовок</Text>
-
-// ✅ хорошо — строковый цвет
-const { primary } = useThemeTokens();
-<ActivityIndicator color={primary} />
-
-// ✅ ок — градиент вне NativeWind
-<LinearGradient colors={Gradient.light} />
-```
-
-## Визуал
-
-- Ориентир: `assets/mockups/`
-- Согласуй с уже существующими экранами и shared UI (`Button`, `Input`, `SafeAreaScreen` и др.)
-- Не ломай текущую палитру и радиусы ради «нового» дизайна
+Ориентир: `assets/mockups/`, существующие `shared/ui`.

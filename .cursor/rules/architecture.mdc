@@ -1,68 +1,42 @@
 ---
-description: Архитектура слоёв AiFinance, UI placement, роуты, проверка организации
+description: Архитектура слоёв AiFinance, UI placement, роуты
 alwaysApply: true
 ---
 
 # Архитектура
 
-Следуй разделам README.md: «Структура src», «Назначение слоёв», «Правила импортов». Не дублируй и не выдумывай другие слои.
+Следуй README.md: структура, роли, импорты. Не классический FSD (`widgets`, `processes` и т.д.). Не выдумывай новые слои.
 
 ## Слои
 
-- `app/` — тонкие маршруты Expo Router, composition root (layouts, providers)
-- `features/` — сценарии пользователя; Zustand и локальный query только внутри фичи (`features/<name>/store`)
-- `entities/` — домен и Zod, без React / SQLite / Supabase
-- `data/` — I/O (query client, supabase; позже db/sync/ai); не зависит от `features`
-- `shared/` — общее без бизнес-смысла (UI, `lib/formatRub` и др. утилиты, когда нужны больше чем одной фиче)
-- `styles/` — CSS-токены темы
+- `app/` — маршруты Expo Router; `app/_layout` — Query, `providers`, Stack.Protected
+- `pages/<экран>/ui/` — сборка экрана (секции + фичи). Точка входа: `Home.tsx` или `SignIn.tsx` / `SignUp.tsx` по экрану
+- `providers/` — оболочка (не слой): `SessionProvider`, `ThemeProvider`; стор темы — `features/theme/store`
+- `features/<действие>/` — `ui` + `query` (+ `store` при необходимости)
+- `entities/` — домен, Zod, типы; без React / SQLite / Supabase
+- `data/` — I/O; не зависит от `features` и `pages`
+- `shared/` — UI, хуки, утилиты без бизнес-смысла
+- `styles/` — CSS-токены
 
-## UI и навигация
+Фича = действие (войти, выйти, добавить операцию). Не экран (`pages/`), не оболочка (`providers/`). Не заводить `features/home`.
 
-- Переиспользуемые компоненты → `src/shared/ui`
-- UI только для фичи → `src/features/<name>/ui`
-- Навигация только через `Routes` из `@/shared/navigation/routes` (не хардкодить пути строк)
-- Не придумывать компоненты, если можно использовать из `src/shared/ui` (`Button`, `Pressable` — не заводить `IconButton`)
+## UI
 
-```ts
-// ❌ плохо
-router.push('/sign-up');
-
-// ✅ хорошо
-import { Routes } from '@/shared/navigation/routes';
-router.push(Routes.auth.signUp);
-```
+- `shared/ui` — переиспользуемые компоненты
+- `features/<name>/ui` — форма, sheet, кнопка действия
+- `pages/<name>/ui` — секции экрана
+- Навигация — `Routes` из `@/shared/navigation/routes`
 
 ## Сеть
 
-- `features/<name>/ui` и экраны-маршруты `app/` не импортируют `@supabase/*` и `@/data/supabase`
-- Вызовы бэкенда из UI — только через `features/<name>/query` (`useMutation` / `useQuery`)
-- Хуки query вызывают `src/data/…`, не SDK в JSX
-- `data/supabase` — единственное место supabase-js
-- Провайдеры (`SessionProvider`) могут использовать `data` без Query-хука
-- `app/_layout.tsx` может импортировать `data/query/client`
-
-```ts
-// ❌ плохо — экран знает Auth
-import { signUp } from '@/data/supabase/auth';
-
-// ✅ хорошо
-import { useSignUp } from '../query/useSignUp';
-```
+- `pages`, `features/ui`, маршруты `app/` — не `@supabase/*`, не `@/data/supabase`
+- Бэкенд из UI — `features/<name>/query` → `data/`
+- `SessionProvider` может ходить в `data` без Query
 
 ## Данные на экране
 
-- Серверные данные — TanStack Query (`features/<name>/query`), не Zustand
-- Zustand / `useState` — только локальный UI
-- UI-стейт держать в том компоненте, которому он нужен; не поднимать в родителя без нужды
-- Экран-сценарий (`Home`) вызывает хуки и отдаёт пропсы секциям; несколько хуков на экране — нормально
-- Хук в дочернем — только если блок живёт сам по себе или на другом экране
-- Не вызывать один и тот же хук и в родителе, и в ребёнке
-- Не копировать `data` из Query в store
+- Серверное — TanStack Query в `features/*/query`, не Zustand
+- Zustand — локальный UI фичи или компонента
+- Страница вызывает хуки фич и отдаёт данные секциям; не дублировать один хук в родителе и ребёнке
 
-## Правила Cursor
-
-Новый `.mdc` в `.cursor/rules/` — только если тема не укладывается в уже существующие файлы. Иначе дописать секцию туда.
-
-## После изменений
-
-В конце ответа одной-двумя фразами скажи, корректно ли новый код организован относительно этих слоёв (или что поправить). Также укажи насколько корректно организован код относительно актуальных и современных стандартов построения архитектуры приложений в 2026 году.
+Новый `.mdc` — только если тема не влезает в существующие файлы.
