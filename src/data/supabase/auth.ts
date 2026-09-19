@@ -1,5 +1,6 @@
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js';
 import type { TSignInInput, TSignUpInput } from '@/entities/auth/schema/auth';
+import type { TUser } from '@/entities/auth/types/user';
 import { supabase } from './client';
 
 export const signIn = async ({ email, password }: TSignInInput) => {
@@ -23,12 +24,27 @@ export const signOut = async () => {
   return await supabase.auth.signOut();
 };
 
-export const getSession = async () => {
-  return await supabase.auth.getSession();
+function toUser(session: Session | null): TUser | null {
+  if (!session?.user) {
+    return null;
+  }
+
+  const displayName = session.user.user_metadata.displayName;
+
+  return {
+    id: session.user.id,
+    email: session.user.email ?? null,
+    displayName: typeof displayName === 'string' ? displayName : null,
+  };
+}
+
+export const getCurrentUser = async (): Promise<TUser | null> => {
+  const { data } = await supabase.auth.getSession();
+  return toUser(data.session);
 };
 
-export function onAuthStateChange(
-  callback: (event: AuthChangeEvent, session: Session | null) => void,
-) {
-  return supabase.auth.onAuthStateChange(callback);
+export function onAuthUserChange(callback: (user: TUser | null) => void) {
+  return supabase.auth.onAuthStateChange((_event, session) => {
+    callback(toUser(session));
+  });
 }

@@ -4,9 +4,8 @@ import { Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import '../../global.css';
 import { queryClient } from '@/data/query/client';
-import { ThemeProvider } from '@/features/theme/providers/ThemeProvider';
-import { useSession } from '@/features/auth/hooks/useSession';
-import { SessionProvider } from '@/features/auth/providers/SessionProvider';
+import { SessionProvider, useSession } from '@/providers/SessionProvider';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 import { useThemeTokens } from '@/shared/hooks/useThemeTokens';
 
 export default function RootLayout() {
@@ -24,7 +23,7 @@ export default function RootLayout() {
 }
 
 function RootNavigator() {
-  const { session, isLoading } = useSession();
+  const { user, isLoading } = useSession();
   const { primary } = useThemeTokens();
 
   if (isLoading) {
@@ -37,10 +36,10 @@ function RootNavigator() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!!session}>
+      <Stack.Protected guard={!!user}>
         <Stack.Screen name="(app)" />
       </Stack.Protected>
-      <Stack.Protected guard={!session}>
+      <Stack.Protected guard={!user}>
         <Stack.Screen name="(auth)" />
       </Stack.Protected>
     </Stack>
