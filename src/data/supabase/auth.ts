@@ -1,16 +1,28 @@
 import type { Session } from '@supabase/supabase-js';
-import type { TSignInInput, TSignUpInput } from '@/entities/auth/schema/auth';
-import type { TUser } from '@/entities/auth/types/user';
 import { supabase } from './client';
 
-export const signIn = async ({ email, password }: TSignInInput) => {
+export type TUser = {
+  id: string;
+  email: string | null;
+  displayName: string | null;
+};
+
+export const signIn = async ({ email, password }: { email: string; password: string }) => {
   return await supabase.auth.signInWithPassword({
     email,
     password,
   });
 };
 
-export const signUp = async ({ displayName, email, password }: TSignUpInput) => {
+export const signUp = async ({
+  displayName,
+  email,
+  password,
+}: {
+  displayName: string;
+  email: string;
+  password: string;
+}) => {
   return await supabase.auth.signUp({
     email,
     password,

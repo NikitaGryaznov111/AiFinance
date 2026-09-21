@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import Button from '@/shared/ui/Button';
-import { TOperation } from '@/entities/operation/types/operation';
+import { TOperation } from '@/features/operations/schema/operation';
 import OperationRow from './OperationRow';
 
 interface IRecentOperationsProps {

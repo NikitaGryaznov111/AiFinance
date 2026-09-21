@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { Bell, User } from 'lucide-react-native';
 import { useSession } from '@/providers/SessionProvider';
-import { Routes } from '@/shared/navigation/routes';
+import { Routes } from '@/shared/routes/routes';
 import Button from '@/shared/ui/Button';
 
 const HomeHeader = () => {

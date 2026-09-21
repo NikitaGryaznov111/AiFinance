@@ -17,14 +17,6 @@ export const signUpSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
 });
-export const signUpFormSchema = signUpSchema
-  .extend({
-    confirmPassword: z.string(),
-  })
-  .refine((value) => value.password === value.confirmPassword, {
-    path: ['confirmPassword'],
-    error: 'Пароли не совпадают',
-  });
 
 export type TSignInInput = z.infer<typeof signInSchema>;
 export type TSignUpInput = z.infer<typeof signUpSchema>;

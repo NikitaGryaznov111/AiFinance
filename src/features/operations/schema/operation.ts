@@ -1,5 +1,5 @@
 export type TOperationKind = 'income' | 'expense';
-
+// TODO Перевести на ZOD
 export type TOperation = {
   id: string;
   userId: string;
