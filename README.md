@@ -1,65 +1,61 @@
 # AiFinance
 
-Мобильное приложение на React Native (Expo) для учёта личных финансов с AI-парсингом текстового/голосового ввода.
+Учёт личных финансов (Expo). Цель — **local-first**: CRUD в SQLite, sync и auth через Supabase. Сейчас: роутинг, тема, auth, главная.
 
-Цель — **Local-First**: UI и CRUD на SQLite, синхронизация и Auth через Supabase. Сейчас в репозитории каркас: роутинг, стили, auth, главная.
+**Стек:** Expo 57, Expo Router, NativeWind, TanStack Query, Zustand, Zod, Supabase, AsyncStorage.
 
-## Стек
-
-Expo SDK 57, Expo Router, NativeWind, TanStack Query, Zustand, Zod, Supabase JS, AsyncStorage.
-
-## Структура `src`
+## `src`
 
 ```text
-src/
-├── app/                 # Маршруты (тонко: SafeArea + pages)
-├── pages/               # Сборка экранов
-│   ├── home/ui/         # Home.tsx + секции
-│   └── auth/ui/         # SignIn.tsx, SignUp.tsx
-├── providers/           # Оболочка (не слой): SessionProvider, ThemeProvider
-├── features/            # Действия пользователя
-│   ├── auth/ui, query/  # формы, useSignIn | useSignUp | useSignOut
-│   └── theme/store/     # тема (переключатель — ui позже)
-├── entities/            # Домен, Zod, типы (без React и I/O)
-├── data/                # query/, supabase/ (позже db, sync, ai)
-├── shared/              # ui/, hooks/, lib/, navigation/
-└── styles/              # themeTokens.css
+app/           # маршруты: SafeArea + pages (или layout)
+pages/         # экран и UI, который только здесь (секции, формы входа)
+features/      # возможность: query, schema (API), ui — если нужен на 2+ экранах
+providers/     # SessionProvider, ThemeProvider (только из app/_layout)
+data/          # I/O: supabase, query/client; позже db, sync
+shared/        # ui, hooks, lib, styles, routes
 ```
 
-## Роли (не FSD)
+Фича = действие (`auth`, `operations`, `categories`), не экран. Не заводить `features/home`.
 
-| Роль | Где | Примеры |
-|------|-----|---------|
-| Фича | `features/<действие>/` | войти, выйти, добавить операцию |
-| Страница | `pages/<экран>/ui/` | главная, вход, регистрация |
-| Оболочка | `providers/` | сессия, корневой ThemeProvider |
+| Куда                | Что                                       |
+| ------------------- | ----------------------------------------- |
+| `pages`             | сборка экрана, локальный UI               |
+| `features/*/query`  | TanStack Query → `data`                   |
+| `features/*/schema` | Zod того, что уходит/приходит с бэка      |
+| `features/*/ui`     | форма, row, sheet — если переиспользуется |
+| `data`              | клиенты, маппинг                          |
+| `shared`            | без домена и без SDK                      |
 
-- Экран собирает `pages/`, не `features/home`.
-- Домен (`TOperation`, `TUser`) — `entities/`, не копировать под экран.
-- `providers/` монтирует только `app/_layout.tsx`. Стор темы — `features/theme/store`.
+Форменные поля (`confirmPassword`) — в `pages`, не в API-schema. Локальный тип/пропсы — в файле компонента.
 
 ## Импорты
 
 ```text
-app/_layout     → providers, data/query, shared
-app (маршруты)  → pages, shared
-pages           → features, entities, shared, providers (useSession)
-features/ui     → entities, shared, свой query
-features/query  → data, entities
-providers       → data, entities, features/theme/store
-data            → entities, shared
-entities        → почти никого
-shared          → никого из верхних слоёв
+app
+  └─ pages, providers, data/query, shared
+
+pages
+  └─ features, shared, providers
+
+features
+  └─ data, shared
+
+providers
+  └─ data, features/theme/store
+
+data
+  └─ shared
+
+shared
+  └─ только npm
 ```
 
-Маршруты `app/` не импортируют `features` напрямую. UI не ходит в `@/data/supabase` — только `features/*/query`. Исключение: `SessionProvider` подписывается на auth в `data`.
+UI и маршруты не ходят в `data` / `@supabase/*` — только через `features/*/query`. Исключение: `SessionProvider` → `data`.
 
 ## Скрипты
 
-`npm run emulator` — AVD с DNS `8.8.8.8` (иначе `*.supabase.co` может не резолвиться).
-
-| Команда | Описание |
-|---------|----------|
-| `npm run start` | Expo Dev Server |
-| `npm run android` / `ios` / `web` | Платформы |
-| `npm run emulator` | AVD Small_Phone |
+| Команда                           | Описание                                          |
+| --------------------------------- | ------------------------------------------------- |
+| `npm run start`                   | Dev server                                        |
+| `npm run android` / `ios` / `web` | Платформы                                         |
+| `npm run emulator`                | AVD Small_Phone (DNS 8.8.8.8 для `*.supabase.co`) |

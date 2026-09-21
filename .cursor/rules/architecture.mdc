@@ -1,42 +1,17 @@
 ---
-description: Архитектура слоёв AiFinance, UI placement, роуты
+description: Слои AiFinance — см. README.md
 alwaysApply: true
 ---
 
 # Архитектура
 
-Следуй README.md: структура, роли, импорты. Не классический FSD (`widgets`, `processes` и т.д.). Не выдумывай новые слои.
+Структура и импорты — **README.md**. Не добавляй новые слои.
 
-## Слои
+Кратко для правок:
 
-- `app/` — маршруты Expo Router; `app/_layout` — Query, `providers`, Stack.Protected
-- `pages/<экран>/ui/` — сборка экрана (секции + фичи). Точка входа: `Home.tsx` или `SignIn.tsx` / `SignUp.tsx` по экрану
-- `providers/` — оболочка (не слой): `SessionProvider`, `ThemeProvider`; стор темы — `features/theme/store`
-- `features/<действие>/` — `ui` + `query` (+ `store` при необходимости)
-- `entities/` — домен, Zod, типы; без React / SQLite / Supabase
-- `data/` — I/O; не зависит от `features` и `pages`
-- `shared/` — UI, хуки, утилиты без бизнес-смысла
-- `styles/` — CSS-токены
-
-Фича = действие (войти, выйти, добавить операцию). Не экран (`pages/`), не оболочка (`providers/`). Не заводить `features/home`.
-
-## UI
-
-- `shared/ui` — переиспользуемые компоненты
-- `features/<name>/ui` — форма, sheet, кнопка действия
-- `pages/<name>/ui` — секции экрана
-- Навигация — `Routes` из `@/shared/navigation/routes`
-
-## Сеть
-
-- `pages`, `features/ui`, маршруты `app/` — не `@supabase/*`, не `@/data/supabase`
-- Бэкенд из UI — `features/<name>/query` → `data/`
-- `SessionProvider` может ходить в `data` без Query
-
-## Данные на экране
-
-- Серверное — TanStack Query в `features/*/query`, не Zustand
-- Zustand — локальный UI фичи или компонента
-- Страница вызывает хуки фич и отдаёт данные секциям; не дублировать один хук в родителе и ребёнке
-
-Новый `.mdc` — только если тема не влезает в существующие файлы.
+- Фича = действие (`auth`, `operations`), не экран. Без `features/home`.
+- `pages` — экран и UI только здесь; `features/*/ui` — если тот же UI на 2+ экранах.
+- UI и `app/*` не импортируют `@/data/supabase`, `@supabase/*` → только `features/*/query`.
+- Исключение: `SessionProvider` → `data` (auth listener).
+- Серверное — Query в `features/*/query`; Zustand — локальный UI. Хук на странице, в секции — пропсы, без дубля в родителе и ребёнке.
+- `Routes` — `@/shared/routes/routes`.

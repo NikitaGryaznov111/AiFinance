@@ -1,27 +1,23 @@
 ---
-description: Типы AiFinance — размещение, Zod, префиксы T/I
+description: Типы и Zod AiFinance
 globs: src/**/*.{ts,tsx}
 alwaysApply: true
 ---
 
 # Типы
 
-## Куда класть
+## Куда
 
-- Домен на несколько фич → `entities/<name>/types/`
-- Только одна фича → `features/<feature>/types/`
-- View-модель одной страницы → `pages/<page>/types/`
-- Пропсы компонента → `interface` внутри компонента
+- API (уходит/приходит с бэка) → `features/<name>/schema/`, Zod + `T…` через `z.infer` в том же файле
+- Поля только формы (`confirmPassword`) → в `pages`, не в API-schema
+- Тип ответа I/O (напр. `TUser`) → рядом с маппингом в `data`
+- Нужен в нескольких файлах одной фичи → `features/<name>/types/`
+- Только в одном компоненте → в файле компонента
 
-## Zod
-
-- Схемы → `entities/<name>/schema/` (auth: `schema/auth.ts`, вход и регистрация в одном файле)
-- `z.infer` в том же файле; типы API не дублировать в `types/`
-- Zod не для моков без схемы на API
+`data` не импортирует `features`. Не дублировать API-тип отдельно от schema.
 
 ## Имена
 
-- `type` / `z.infer` — префикс `T`: `TUser`, `TSignInInput`
-- `interface` (пропсы, контракты) — префикс `I`: `IButtonProps`
-- Схемы Zod без префикса: `signInSchema`
-- Пропсы — `interface`, не `type`
+- `type` / `z.infer` → `T…` (`TUser`, `TSignInInput`)
+- пропсы → `interface` с `I…` (`IButtonProps`), не `type`
+- схемы Zod без префикса: `signInSchema`

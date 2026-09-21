@@ -1,15 +1,15 @@
 ---
-description: NativeWind и токены темы AiFinance
+description: NativeWind и тема
 globs: src/**/*.{ts,tsx}
 alwaysApply: true
 ---
 
-# UI и стили
+# UI
 
-- Вёрстка через `className` (NativeWind). Без `StyleSheet` для обычного UI
-- Цвета — токены `themeTokens.css` / Tailwind (`bg-background`, `text-primary`, …)
+- Вёрстка — `className` (NativeWind), не `StyleSheet` для обычного UI
+- Цвета — токены `shared/styles/themeTokens.css` / Tailwind (`bg-background`, `text-primary`, …)
 - Строка цвета (Lucide, `ActivityIndicator`, tab bar) → `useThemeTokens()` из `@/shared/hooks/useThemeTokens`
-- Не палитра `Colors.*`, не `useUnstableNativeVariable` в компонентах
-- Hex только где API не принимает CSS-переменную: градиент в `SafeAreaScreen` (`LinearGradient`)
+- Не `Colors.*`, не `useUnstableNativeVariable` в компонентах
+- Hex только где CSS-var не подходит (градиент в `SafeAreaScreen`)
 
-Ориентир: `assets/mockups/`, существующие `shared/ui`.
+Ориентир: `assets/mockups/`, `shared/ui`.
