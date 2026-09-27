@@ -25,7 +25,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorFields, setErrorFields] = useState<Record<string, string> | null>(null);
-  const { signUp, isPending, isSuccess, error: signUpError, data } = useSignUp();
+  const { signUp, isPending, isSuccess, error: signUpError, needsEmailConfirm } = useSignUp();
 
   const onSignUp = () => {
     const res = signUpFormSchema.safeParse({ displayName, email, password, confirmPassword });
@@ -97,7 +97,7 @@ const SignUp = () => {
           textContentType="newPassword"
           errorMessage={errorFields?.confirmPassword}
         />
-        {isSuccess && !data?.session && (
+        {isSuccess && needsEmailConfirm && (
           <Text className="text-primary mt-2 text-xs">Проверьте почту и подтвердите email</Text>
         )}
         {/* TODO реализовать мапинг ошибок */}

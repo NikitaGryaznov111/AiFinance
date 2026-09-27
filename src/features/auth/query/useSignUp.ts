@@ -18,8 +18,7 @@ export const useSignUp = () => {
     signUp: mutation.mutate,
     isPending: mutation.isPending,
     isSuccess: mutation.isSuccess,
-    isError: mutation.isError,
     error: mutation.error,
-    data: mutation.data,
+    needsEmailConfirm: mutation.data?.session === null,
   };
 };

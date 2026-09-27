@@ -19,8 +19,8 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
       });
 
-    const { data } = onAuthUserChange(setUser);
-    return () => data.subscription.unsubscribe();
+    const unsubscribe = onAuthUserChange(setUser);
+    return unsubscribe;
   }, []);
 
   return <SessionContext.Provider value={{ user, isLoading }}>{children}</SessionContext.Provider>;

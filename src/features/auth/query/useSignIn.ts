@@ -9,7 +9,6 @@ export const useSignIn = () => {
       if (error) {
         throw new Error(error.message ?? 'Ошибка входа');
       }
-      return data;
     },
     retry: 0,
   });
