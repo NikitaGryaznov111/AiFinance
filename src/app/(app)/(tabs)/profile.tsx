@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { signOut } from '@/data/supabase/auth';
 import Button from '@/shared/ui/Button';
 

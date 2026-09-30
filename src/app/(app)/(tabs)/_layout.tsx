@@ -1,6 +1,6 @@
-import { useThemeTokens } from '@/shared/hooks/useThemeTokens';
 import { Tabs } from 'expo-router';
 import { ChartPie, House, List, User } from 'lucide-react-native';
+import { useThemeTokens } from '@/shared/hooks/useThemeTokens';
 
 export default function TabsLayout() {
   const { primary, muted } = useThemeTokens();
