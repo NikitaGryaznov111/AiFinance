@@ -43,3 +43,6 @@ yarn-error.*
 
 # local design mockups
 assets/mockups/
+
+# local agent skill
+.cursor/skills/code-review/
