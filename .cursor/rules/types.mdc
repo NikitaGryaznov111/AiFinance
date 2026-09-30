@@ -9,7 +9,7 @@ alwaysApply: true
 ## Куда
 
 - API (уходит/приходит с бэка) → `features/<name>/schema/`, Zod + `T…` через `z.infer` в том же файле
-- Поля только формы (`confirmPassword`) → в `pages`, не в API-schema
+- Поля только формы (`confirmPassword`) → рядом с формой (`pages` или `features/*/ui`), не в API-schema
 - Тип ответа I/O (напр. `TUser`) → рядом с маппингом в `data`
 - Нужен в нескольких файлах одной фичи → `features/<name>/types/`
 - Только в одном компоненте → в файле компонента

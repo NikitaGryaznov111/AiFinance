@@ -9,9 +9,10 @@ alwaysApply: true
 
 Кратко для правок:
 
-- Фича = действие (`auth`, `operations`), не экран. Без `features/home`.
-- `pages` — экран и UI только здесь; `features/*/ui` — если тот же UI на 2+ экранах.
-- UI и `app/*` не импортируют `@/data/supabase`, `@supabase/*` → только `features/*/query`.
+- Фича = действие (`auth`, `operations`, `categories`), не экран. Без `features/home`.
+- `pages` — сборка экрана и UI только этого маршрута. `features/*/ui` — UI действия (форма, row, sheet), даже на одном экране. Секции дашборда остаются в `pages`.
+- `pages` / `features/*/ui` не импортируют `@/data/supabase`, `@supabase/*` → только `features/*/query`.
+- `app/*` — маршруты: `pages`, `providers`, `data/query`, `shared`. Не `features` и не `@/data/supabase`.
 - Исключение: `SessionProvider` → `data` (auth listener).
-- Серверное — Query в `features/*/query`; Zustand — локальный UI. Хук на странице, в секции — пропсы, без дубля в родителе и ребёнке.
+- Серверное — Query в `features/*/query`; Zustand — локальный UI. Вызов хука — на странице или в UI фичи, в секцию экрана — пропсы. Без дубля в родителе и ребёнке.
 - `Routes` — `@/shared/routes/routes`.
