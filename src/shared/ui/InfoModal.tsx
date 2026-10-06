@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react';
+import { ReactElement, useCallback, useEffect, useRef, type ReactNode } from 'react';
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
@@ -6,18 +6,20 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
-import { ListRenderItem } from 'react-native';
+import { ListRenderItem, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IInfoModalProps<T> {
   visible: boolean;
   onClose: () => void;
-  children: ReactNode;
+  children?: ReactNode;
   isList?: boolean;
   data?: T[];
   keyExtractor?: (item: T) => string;
   renderItem?: ListRenderItem<T>;
-  listFooterComponent?: ReactElement<any> | null;
+  listFooterComponent?: ReactElement | null;
+  /** Стек модальных окон */
+  stackBehavior?: 'push' | 'replace' | 'switch';
 }
 
 const InfoModal = <T,>({
@@ -29,10 +31,13 @@ const InfoModal = <T,>({
   keyExtractor,
   renderItem,
   listFooterComponent,
+  stackBehavior,
 }: IInfoModalProps<T>) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const wasVisibleRef = useRef(false);
   const { bottom } = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
+  const maxDynamicContentSize = height * 0.85;
 
   useEffect(() => {
     if (visible) {
@@ -59,7 +64,6 @@ const InfoModal = <T,>({
     [],
   );
 
-  const snapPoints = useMemo(() => (isList ? ['40%', '85%'] : ['85%']), [isList]);
   const contentContainerStyle = {
     paddingHorizontal: 16,
     paddingTop: 8,
@@ -69,17 +73,16 @@ const InfoModal = <T,>({
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}
-      snapPoints={snapPoints}
-      enableContentPanningGesture={false}
+      maxDynamicContentSize={maxDynamicContentSize}
+      stackBehavior={stackBehavior}
       keyboardBehavior="interactive"
       keyboardBlurBehavior="restore"
+      android_keyboardInputMode="adjustPan"
       onDismiss={() => {
         wasVisibleRef.current = false;
         onClose();
       }}
-      backdropComponent={renderBackdrop}
-      android_keyboardInputMode="adjustPan"
-      enableDynamicSizing={false}>
+      backdropComponent={renderBackdrop}>
       {isList ? (
         <BottomSheetFlatList
           data={data}

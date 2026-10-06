@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View } from 'react-native';
 import { Plus } from 'lucide-react-native';
-import AddOperations from '@/features/operations/ui/AddOperations';
+import AddOperationForm from '@/features/operations/ui/AddOperationForm';
 import Button from '@/shared/ui/Button';
 import Container from '@/shared/ui/Container';
 import InfoModal from '@/shared/ui/InfoModal';
@@ -31,7 +31,7 @@ const Home = () => {
         viewStyle="absolute bottom-4 right-4 h-14 w-14 rounded-full p-0"
       />
       <InfoModal visible={modalVisible} onClose={() => setModalVisible(false)}>
-        <AddOperations />
+        <AddOperationForm />
       </InfoModal>
     </View>
   );
