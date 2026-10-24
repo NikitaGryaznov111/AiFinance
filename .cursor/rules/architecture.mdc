@@ -10,9 +10,11 @@ alwaysApply: true
 Кратко для правок:
 
 - Фича = действие (`auth`, `operations`, `categories`), не экран. Без `features/home`.
-- `pages` — сборка экрана и UI только этого маршрута. `features/*/ui` — UI действия (форма, row, sheet), даже на одном экране. Секции дашборда остаются в `pages`.
-- `pages` / `features/*/ui` не импортируют `@/data/supabase`, `@supabase/*` → только `features/*/query`.
-- `app/*` — маршруты: `pages`, `providers`, `data/query`, `shared`. Не `features` и не `@/data/supabase`.
-- Исключение: `SessionProvider` → `data` (auth listener).
-- Серверное — Query в `features/*/query`; Zustand — локальный UI. Вызов хука — на странице или в UI фичи, в секцию экрана — пропсы. Без дубля в родителе и ребёнке.
+- В фиче: `api` (вызовы бэка), `query` (TanStack Query), `schema` (Zod-валидация), `types`, `ui`.
+- `pages` — сборка экрана и UI только этого маршрута. `features/*/ui` — UI действия (форма, row, sheet). Секции дашборда остаются в `pages`.
+- Фича не импортирует другую фичу. Общие данные с нескольких фич — хук на `pages`, вниз пропсами.
+- `pages` / `features/*/ui` / `app` не импортируют `@/data/supabase`, `@supabase/*` и по возможности не `features/*/api` → только `features/*/query`.
+- Исключения I/O вне query: `SessionProvider` → `features/auth/api` (listener сессии).
+- `data` — общий клиент (`supabase/client`), `query/client`; без доменных запросов фич.
+- Вызов query-хука — на странице или в UI **своей** фичи, без дубля в родителе и ребёнке.
 - `Routes` — `@/shared/routes/routes`.
