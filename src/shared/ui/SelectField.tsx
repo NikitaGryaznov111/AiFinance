@@ -10,6 +10,7 @@ export interface ISelectOption {
 }
 
 interface ISelectFieldProps {
+  disabled?: boolean;
   label: string;
   icon: LucideIcon;
   options: ISelectOption[];
@@ -18,9 +19,11 @@ interface ISelectFieldProps {
   onValueChange: (value: string) => void;
   /** Если список внутри другой модалки */
   stackBehavior?: 'push' | 'replace' | 'switch';
+  errorMessage?: string;
 }
 
 const SelectField = ({
+  disabled,
   label,
   icon: Icon,
   options,
@@ -28,6 +31,7 @@ const SelectField = ({
   placeholder,
   onValueChange,
   stackBehavior,
+  errorMessage,
 }: ISelectFieldProps) => {
   const { muted, primary } = useThemeTokens();
   const [open, setOpen] = useState(false);
@@ -58,6 +62,7 @@ const SelectField = ({
     <View className="gap-1.5">
       <Text className="text-muted text-sm">{label}</Text>
       <Pressable
+        disabled={disabled}
         onPress={() => setOpen(true)}
         accessibilityRole="button"
         accessibilityLabel={label}
@@ -69,7 +74,7 @@ const SelectField = ({
         </Text>
         {open ? <ChevronUp color={muted} size={18} /> : <ChevronDown color={muted} size={18} />}
       </Pressable>
-
+      {errorMessage && <Text className="text-destructive text-xs">{errorMessage}</Text>}
       <InfoModal
         visible={open}
         onClose={() => setOpen(false)}

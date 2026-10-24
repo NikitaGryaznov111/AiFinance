@@ -13,8 +13,8 @@ import { useThemeTokens } from '@/shared/hooks/useThemeTokens';
 export default function RootLayout() {
   return (
     <GestureHandlerRootView className="flex-1">
-      <BottomSheetModalProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <BottomSheetModalProvider>
           <SafeAreaProvider>
             <ThemeProvider>
               <SessionProvider>
@@ -22,8 +22,8 @@ export default function RootLayout() {
               </SessionProvider>
             </ThemeProvider>
           </SafeAreaProvider>
-        </QueryClientProvider>
-      </BottomSheetModalProvider>
+        </BottomSheetModalProvider>
+      </QueryClientProvider>
     </GestureHandlerRootView>
   );
 }
