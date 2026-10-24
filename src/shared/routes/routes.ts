@@ -5,7 +5,7 @@ export const Routes = {
   },
   app: {
     home: '/',
-    transactions: '/transactions',
+    operations: '/operations',
     analytics: '/analytics',
     profile: '/profile',
   },
