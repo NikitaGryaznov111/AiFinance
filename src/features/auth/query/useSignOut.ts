@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { signOut } from '@/data/supabase/auth';
+import { signOut } from '@/features/auth/api/auth';
 
 export const useSignOut = () => {
   const mutation = useMutation({

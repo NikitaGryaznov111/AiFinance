@@ -10,15 +10,6 @@ import Container from '@/shared/ui/Container';
 import Input from '@/shared/ui/Input';
 import AuthorizationTitle from './AuthorizationTitle';
 
-const signUpFormSchema = signUpSchema
-  .extend({
-    confirmPassword: z.string(),
-  })
-  .refine((value) => value.password === value.confirmPassword, {
-    path: ['confirmPassword'],
-    error: 'Пароли не совпадают',
-  });
-
 const SignUp = () => {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,7 +19,8 @@ const SignUp = () => {
   const { signUp, isPending, isSuccess, error: signUpError, needsEmailConfirm } = useSignUp();
 
   const onSignUp = () => {
-    const res = signUpFormSchema.safeParse({ displayName, email, password, confirmPassword });
+    // TODO Вынести в схему safeParse и flattenError
+    const res = signUpSchema.safeParse({ displayName, email, password, confirmPassword });
     if (!res.success) {
       const { fieldErrors } = z.flattenError(res.error);
       setErrorFields({

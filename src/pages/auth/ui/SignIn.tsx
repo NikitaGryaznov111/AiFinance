@@ -17,6 +17,7 @@ const SignIn = () => {
   const { signIn, isPending, error: signInError } = useSignIn();
 
   const onSignIn = () => {
+    // TODO Вынести в схему safeParse и flattenError
     const res = signInSchema.safeParse({ email, password });
     if (!res.success) {
       const { fieldErrors } = z.flattenError(res.error);

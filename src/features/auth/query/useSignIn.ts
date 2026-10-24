@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import { signIn } from '@/data/supabase/auth';
-import type { TSignInInput } from '../schema/auth';
+import { signIn } from '@/features/auth/api/auth';
+import type { TSignInInput } from '../types/auth';
 
 export const useSignIn = () => {
   const mutation = useMutation({
     mutationFn: async (input: TSignInInput) => {
-      const { data, error } = await signIn(input);
+      const { error } = await signIn(input);
       if (error) {
         throw new Error(error.message ?? 'Ошибка входа');
       }

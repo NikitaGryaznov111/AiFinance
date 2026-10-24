@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { getCurrentUser, onAuthUserChange, type TUser } from '@/data/supabase/auth';
+import { getCurrentUser, onAuthUserChange } from '@/features/auth/api/auth';
+import type { TUser } from '@/features/auth/types/auth';
 
 type TSessionContext = {
   user: TUser | null;

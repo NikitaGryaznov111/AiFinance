@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { signOut } from '@/data/supabase/auth';
+import { signOut } from '@/features/auth/api/auth';
 import Button from '@/shared/ui/Button';
 
 export default function ProfileScreen() {

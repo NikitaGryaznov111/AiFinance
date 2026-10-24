@@ -1,11 +1,20 @@
 import type { Session } from '@supabase/supabase-js';
-import { supabase } from './client';
+import { supabase } from '@/data/supabase/client';
+import type { TUser } from '@/features/auth/types/auth';
 
-export type TUser = {
-  id: string;
-  email: string | null;
-  displayName: string | null;
-};
+function toUser(session: Session | null): TUser | null {
+  if (!session?.user) {
+    return null;
+  }
+
+  const displayName = session.user.user_metadata.displayName;
+
+  return {
+    id: session.user.id,
+    email: session.user.email ?? null,
+    displayName: typeof displayName === 'string' ? displayName : null,
+  };
+}
 
 export const signIn = async ({ email, password }: { email: string; password: string }) => {
   return await supabase.auth.signInWithPassword({
@@ -35,20 +44,6 @@ export const signUp = async ({
 export const signOut = async () => {
   return await supabase.auth.signOut();
 };
-
-function toUser(session: Session | null): TUser | null {
-  if (!session?.user) {
-    return null;
-  }
-
-  const displayName = session.user.user_metadata.displayName;
-
-  return {
-    id: session.user.id,
-    email: session.user.email ?? null,
-    displayName: typeof displayName === 'string' ? displayName : null,
-  };
-}
 
 export const getCurrentUser = async (): Promise<TUser | null> => {
   const { data } = await supabase.auth.getSession();
